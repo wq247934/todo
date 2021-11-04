@@ -5,12 +5,12 @@
       <a-input
         v-if="editMode==true"
         size="large"
-        v-model="todo.name"
+        v-model="todo"
         @pressEnter="changeTodo"
         v-autoFocus
         @blur="blurEdit"
       />
-      <span v-else :style="todo.status?'text-decoration:line-through;color:#d9d9d9':''">{{todo.name}}</span>
+      <span v-else :style="todo.status?'text-decoration:line-through;color:#d9d9d9':''">{{todo}}</span>
     </div>
     <a-icon type="close" class="icon" @click="delTodo(index)" />
   </div>
@@ -23,7 +23,7 @@ export default {
   name: "TodoItem",
   props: {
     todo: {
-      type: Object,
+      type: String,
     },
     index: {
       type: Number,

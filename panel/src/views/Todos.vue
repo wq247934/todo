@@ -1,14 +1,15 @@
 <template>
   <div>
-    <template v-for="(todo,i) in getTodoList">
-      <todo-item :todo="todo" :index="i" :key="i" v-if="tag=='all'||todo.status===status" />
+    <template v-for="(todo,i) in todoList">
+      <todo-item :todo="todo.value" :index="i" :key="i" v-if="tag=='all'||todo.is_completed===status"/>
     </template>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import TodoItem from "../components/TodoItem.vue";
+
 export default {
   name: "Todos",
   components: {
@@ -18,12 +19,14 @@ export default {
     return {
       tag: "all",
       status: "",
+      todoList: []
     };
   },
   computed: {
     ...mapGetters(["getTodoList"]),
   },
   created() {
+    this.getTodoList2()
     console.log(this.$route.params);
     console.log(this.tag);
   },
@@ -44,7 +47,20 @@ export default {
     }
     next();
   },
-  methods: {},
+  methods: {
+    getTodoList2() {
+      const axios = require('axios');
+
+// 向给定ID的用户发起请求
+      const _this = this;
+      axios.get('http://localhost:8080/v1/todos/0')
+          .then(function (response) {
+            // 处理成功情况
+            console.log(response.data.result);
+            _this.todoList = response.data.result
+          })
+    }
+  },
 };
 </script>
 
